@@ -4,6 +4,8 @@ const fileUpload = require("express-fileupload");
 require("dotenv").config();
 
 const app = express();
+const { AdminListModel } = require("./Database.js");
+
 
 app.use(cors());
 app.use(express.json());
