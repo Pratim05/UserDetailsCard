@@ -86,21 +86,21 @@ const Navbar = () => {
                          As a Student
                       </Link>
                       <Link
-                        to="/StudentRegistration"
+                        to="/BusinessStudentReg"
                         className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
                         onClick={() => setIsOpen(false)}
                       >
                          As a Student(Business)
                       </Link>
                       <Link
-                        to="/ProfasonalOrBussinesRagistation"
+                        to="/ProfessionalReg"
                         className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
                         onClick={() => setIsOpen(false)}
                       >
                         As a Professional
                       </Link>
                       <Link
-                        to="/ProfasonalOrBussinesRagistation"
+                        to="/ProfessionalReg"
                         className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
                         onClick={() => setIsOpen(false)}
                       >

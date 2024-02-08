@@ -6,10 +6,13 @@ require("dotenv").config();
 const app = express();
 const { AdminListModel } = require("./Database.js");
 
+const UserRoutes = require("./routes/UserRoutes.js");
 
 app.use(cors());
 app.use(express.json());
 app.use(fileUpload());
+
+app.use("/api/auth", UserRoutes);
 
 
 

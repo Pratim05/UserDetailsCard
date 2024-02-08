@@ -1,19 +1,83 @@
 import React, { useState } from 'react';
+import axios from "axios"
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { registerRoute } from "../utils/ApiRoutes";
 
-const BussinesStudentRegistration = () => {
+const BusinessStudentReg = () => {
   const [photo, setPhoto] = useState('');
-  const [userName, setUserName] = useState('');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   const [businessName, setBusinessName] = useState('');
   const [bloodGroup, setBloodGroup] = useState('');
   const [mobileNo, setMobileNo] = useState('');
   const [address, setAddress] = useState('');
-  const [emergencyPhone, setEmergencyPhone] = useState('');
+  const [emergencyNo, setEmergencyNo] = useState('');
   const [website, setWebsite] = useState('');
+  const [password, setPassword] = useState("");
+  const [confirmpassword, setConfirmPassword] = useState("");
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // You can implement your registration logic here, such as sending the data to a backend server
-    console.log('Registration Data:', { photo, userName, businessName, bloodGroup, mobileNo, address, emergencyPhone, website });
+  const toastOptions = {
+    position: "bottom-right",
+    autoClose: 7000,
+    draggable: true,
+    pauseOnHover: true,
+  };
+
+  const handleSubmit = async (event) => {
+    try {
+      event.preventDefault();
+      if (handeValidation()) {
+        const userRole = "businessStudent";
+        console.log("in Validation", registerRoute)
+        const response = await axios.post(
+          registerRoute,
+          {
+            userRole,
+            name,
+            email,
+            businessName,
+            bloodGroup,
+            mobileNo,
+            address,
+            emergencyNo,
+            website,
+            password,
+            photo,
+          },
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+         console.log(response.data.student)
+        if (response.data.status === false) {
+          toast.error(response.data.msg, toastOptions);
+        }
+        if (response.data.status === true) {
+          toast.success(response.data.msg, toastOptions);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handeValidation = () => {
+    if (password !== confirmpassword) {
+      toast.error("Password and Confirm Password should be same", toastOptions);
+      return false;
+    } else if (name.length < 3) {
+      toast.error("Username Should be greater than 3 character", toastOptions);
+      return false;
+    } else if (password.length < 6) {
+      toast.error("Password length should be greater than 6", toastOptions);
+      return false;
+    } else if (email === "") {
+      toast.error("Please enter a valid email", toastOptions);
+      return false;
+    }
+    return true;
   };
 
   return (
@@ -37,8 +101,17 @@ const BussinesStudentRegistration = () => {
               type="text" 
               id="userName" 
               className="border rounded-lg px-4 py-2 w-full focus:outline-none focus:border-blue-500" 
-              value={userName} 
-              onChange={(e) => setUserName(e.target.value)} 
+              onChange={(e) => setName(e.target.value)} 
+              required 
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="email" className="block text-gray-700 font-bold mb-2">Email</label>
+            <input 
+              type="email" 
+              id="email" 
+              className="border rounded-lg px-4 py-2 w-full focus:outline-none focus:border-blue-500" 
+              onChange={(e) => setEmail(e.target.value)} 
               required 
             />
           </div>
@@ -48,7 +121,6 @@ const BussinesStudentRegistration = () => {
               type="text" 
               id="businessName" 
               className="border rounded-lg px-4 py-2 w-full focus:outline-none focus:border-blue-500" 
-              value={businessName} 
               onChange={(e) => setBusinessName(e.target.value)} 
               required 
             />
@@ -59,7 +131,6 @@ const BussinesStudentRegistration = () => {
               type="text" 
               id="bloodGroup" 
               className="border rounded-lg px-4 py-2 w-full focus:outline-none focus:border-blue-500" 
-              value={bloodGroup} 
               onChange={(e) => setBloodGroup(e.target.value)} 
               required 
             />
@@ -70,7 +141,6 @@ const BussinesStudentRegistration = () => {
               type="number" 
               id="mobileNo" 
               className="border rounded-lg px-4 py-2 w-full focus:outline-none focus:border-blue-500" 
-              value={mobileNo} 
               onChange={(e) => setMobileNo(e.target.value)} 
               required 
             />
@@ -80,7 +150,6 @@ const BussinesStudentRegistration = () => {
             <textarea 
               id="address" 
               className="border rounded-lg px-4 py-2 w-full focus:outline-none focus:border-blue-500" 
-              value={address} 
               onChange={(e) => setAddress(e.target.value)} 
               required 
             />
@@ -91,8 +160,7 @@ const BussinesStudentRegistration = () => {
               type="number" 
               id="emergencyPhone" 
               className="border rounded-lg px-4 py-2 w-full focus:outline-none focus:border-blue-500" 
-              value={emergencyPhone} 
-              onChange={(e) => setEmergencyPhone(e.target.value)} 
+              onChange={(e) => setEmergencyNo(e.target.value)} 
               required 
             />
           </div>
@@ -102,9 +170,36 @@ const BussinesStudentRegistration = () => {
               type="url" 
               id="website" 
               className="border rounded-lg px-4 py-2 w-full focus:outline-none focus:border-blue-500" 
-              value={website} 
               onChange={(e) => setWebsite(e.target.value)} 
               required 
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              htmlFor="password"
+              className="block text-gray-700 font-bold mb-2"
+            >
+              Password
+            </label>
+            <input
+              type="password"
+              id="password"
+              className="border rounded-lg px-4 py-2 w-full focus:outline-none focus:border-blue-500"
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              htmlFor="confirmpassword"
+              className="block text-gray-700 font-bold mb-2"
+            >
+             Confirm Password
+            </label>
+            <input
+              type="password"
+              id="confirmpassword"
+              className="border rounded-lg px-4 py-2 w-full focus:outline-none focus:border-blue-500"
+              onChange={(e) => setConfirmPassword(e.target.value)}
             />
           </div>
           <button 
@@ -119,4 +214,4 @@ const BussinesStudentRegistration = () => {
   );
 };
 
-export default BussinesStudentRegistration;
+export default BusinessStudentReg;

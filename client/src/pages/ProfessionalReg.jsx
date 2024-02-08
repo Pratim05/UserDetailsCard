@@ -1,25 +1,85 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import axios from "axios"
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { registerRoute } from "../utils/ApiRoutes";
 
-const ProfasonalOrBussinesRagistation= () => {
+const ProfessionalReg= () => {
   const [photo, setPhoto] = useState('');
-  const [userName, setUserName] = useState('');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   const [companyName, setCompanyName] = useState('');
   const [bloodGroup, setBloodGroup] = useState('');
   const [mobileNo, setMobileNo] = useState('');
-  const [whatsAppNo, setWhatsAppNo] = useState('');
+  const [whatsappNo, setWhatsAppNo] = useState('');
   const [linkedIn, setLinkedIn] = useState('');
   const [address, setAddress] = useState('');
-  const [emergencyPhone, setEmergencyPhone] = useState('');
-  const [website, setWebsite] = useState('');
+  // const [emergencyPhone, setEmergencyPhone] = useState('');
+  // const [website, setWebsite] = useState('');
+  const [password, setPassword] = useState("");
+  const [confirmpassword, setConfirmPassword] = useState("");
 
-  const handleSubmit = (e) => {
+  const toastOptions = {
+    position: "bottom-right",
+    autoClose: 7000,
+    draggable: true,
+    pauseOnHover: true,
+  };
+
+  const handleSubmit = async (event) => {
     try {
-      e.preventDefault();
-  
-    console.log('Registration Data:', { photo, userName, companyName, bloodGroup, mobileNo, whatsAppNo, linkedIn, address, emergencyPhone, website });
+      event.preventDefault();
+      if (handeValidation()) {
+        const userRole = "professional";
+        console.log("in Validation", registerRoute)
+        const response = await axios.post(
+          registerRoute,
+          {
+            userRole,
+            name,
+            email,
+            bloodGroup,
+            mobileNo,
+            linkedIn,
+            companyName,
+            whatsappNo,
+            address,
+            password,
+            photo,
+          },
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+         console.log(response.data.professional)
+        if (response.data.status === false) {
+          toast.error(response.data.msg, toastOptions);
+        }
+        if (response.data.status === true) {
+          toast.success(response.data.msg, toastOptions);
+        }
+      }
     } catch (error) {
-      
+      console.log(error);
     }
+  };
+  const handeValidation = () => {
+    if (password !== confirmpassword) {
+      toast.error("Password and Confirm Password should be same", toastOptions);
+      return false;
+    } else if (name.length < 3) {
+      toast.error("Username Should be greater than 3 character", toastOptions);
+      return false;
+    } else if (password.length < 6) {
+      toast.error("Password length should be greater than 6", toastOptions);
+      return false;
+    } else if (email === "") {
+      toast.error("Please enter a valid email", toastOptions);
+      return false;
+    }
+    return true;
   };
 
   return (
@@ -43,8 +103,17 @@ const ProfasonalOrBussinesRagistation= () => {
               type="text" 
               id="userName" 
               className="border rounded-lg px-4 py-2 w-full focus:outline-none focus:border-blue-500" 
-              value={userName} 
-              onChange={(e) => setUserName(e.target.value)} 
+              onChange={(e) => setName(e.target.value)} 
+              required 
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="userName" className="block text-gray-700 font-bold mb-2">Email</label>
+            <input 
+              type="email" 
+              id="email" 
+              className="border rounded-lg px-4 py-2 w-full focus:outline-none focus:border-blue-500" 
+              onChange={(e) => setEmail(e.target.value)} 
               required 
             />
           </div>
@@ -54,7 +123,6 @@ const ProfasonalOrBussinesRagistation= () => {
               type="text" 
               id="companyName" 
               className="border rounded-lg px-4 py-2 w-full focus:outline-none focus:border-blue-500" 
-              value={companyName} 
               onChange={(e) => setCompanyName(e.target.value)} 
               required 
             />
@@ -65,7 +133,6 @@ const ProfasonalOrBussinesRagistation= () => {
               type="text" 
               id="bloodGroup" 
               className="border rounded-lg px-4 py-2 w-full focus:outline-none focus:border-blue-500" 
-              value={bloodGroup} 
               onChange={(e) => setBloodGroup(e.target.value)} 
               required 
             />
@@ -76,7 +143,6 @@ const ProfasonalOrBussinesRagistation= () => {
               type="number" 
               id="mobileNo" 
               className="border rounded-lg px-4 py-2 w-full focus:outline-none focus:border-blue-500" 
-              value={mobileNo} 
               onChange={(e) => setMobileNo(e.target.value)} 
               required 
             />
@@ -87,7 +153,6 @@ const ProfasonalOrBussinesRagistation= () => {
               type="tel" 
               id="whatsAppNo" 
               className="border rounded-lg px-4 py-2 w-full focus:outline-none focus:border-blue-500" 
-              value={whatsAppNo} 
               onChange={(e) => setWhatsAppNo(e.target.value)} 
               required 
             />
@@ -98,7 +163,6 @@ const ProfasonalOrBussinesRagistation= () => {
               type="url" 
               id="linkedIn" 
               className="border rounded-lg px-4 py-2 w-full focus:outline-none focus:border-blue-500" 
-              value={linkedIn} 
               onChange={(e) => setLinkedIn(e.target.value)} 
               required 
             />
@@ -108,31 +172,36 @@ const ProfasonalOrBussinesRagistation= () => {
             <textarea 
               id="address" 
               className="border rounded-lg px-4 py-2 w-full focus:outline-none focus:border-blue-500" 
-              value={address} 
               onChange={(e) => setAddress(e.target.value)} 
               required 
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="emergencyPhone" className="block text-gray-700 font-bold mb-2">Emergency Phone Number</label>
-            <input 
-              type="number" 
-              id="emergencyPhone" 
-              className="border rounded-lg px-4 py-2 w-full focus:outline-none focus:border-blue-500" 
-              value={emergencyPhone} 
-              onChange={(e) => setEmergencyPhone(e.target.value)} 
-              required 
+            <label
+              htmlFor="password"
+              className="block text-gray-700 font-bold mb-2"
+            >
+              Password
+            </label>
+            <input
+              type="password"
+              id="password"
+              className="border rounded-lg px-4 py-2 w-full focus:outline-none focus:border-blue-500"
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="website" className="block text-gray-700 font-bold mb-2">Website Link</label>
-            <input 
-              type="url" 
-              id="website" 
-              className="border rounded-lg px-4 py-2 w-full focus:outline-none focus:border-blue-500" 
-              value={website} 
-              onChange={(e) => setWebsite(e.target.value)} 
-              required 
+            <label
+              htmlFor="confirmpassword"
+              className="block text-gray-700 font-bold mb-2"
+            >
+             Confirm Password
+            </label>
+            <input
+              type="password"
+              id="confirmpassword"
+              className="border rounded-lg px-4 py-2 w-full focus:outline-none focus:border-blue-500"
+              onChange={(e) => setConfirmPassword(e.target.value)}
             />
           </div>
           <button 
@@ -147,4 +216,4 @@ const ProfasonalOrBussinesRagistation= () => {
   );
 };
 
-export default ProfasonalOrBussinesRagistation;
+export default ProfessionalReg;

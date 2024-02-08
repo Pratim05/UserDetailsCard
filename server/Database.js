@@ -19,12 +19,22 @@ const options = {
   console.log('Connected to StudentListDb database!');
 });
 
+  const BusinessStudentListDb = mongoose.createConnection(process.env.BUSINESS_STUDENT_MONGO_URL, options);
+  StudentListDb.on('error', console.error.bind(console, 'BusinessStudentListDb database connection error:'));
+  StudentListDb.once('open', () => {
+  console.log('Connected to BusinessStudentListDb database!');
+});
+
+  const ProfessionalListDb = mongoose.createConnection(process.env.PROFESSIONAL_MONGO_URL, options);
+  StudentListDb.on('error', console.error.bind(console, 'ProfessionalListDb database connection error:'));
+  StudentListDb.once('open', () => {
+  console.log('Connected to ProfessionalListDb database!');
+});
+
 const AdminSchema = ({
     username:{
         type : String,
         required : true,
-        min :3,
-        max:20,
         unique :true
     },
     email:{
@@ -41,26 +51,63 @@ const AdminSchema = ({
 })
 
 const StudentSchema = ({
-    username:{
+    name:{
         type : String,
         required : true,
-        min :3,
-        max:20,
-        unique :true
     },
     email:{
         type : String,
         required : true,
         max:20,
-        unique :true
     },
-    businessName:{
+    bloodGroup:{
+        type : String,
+        required : true,
+    },
+    school:{
+        type : String,
+        required: true
+    },
+    mobileNo:{
+        type : String,
+        required : true,
+    },
+    address:{
+        type : String,
+        required : true,
+    },
+    guardianPhone:{
+        type : String,
+    },
+    image :{
+        filename: String ,
+        contentType:String,
+        data: mongoose.Schema.Types.Buffer
+      },
+    password:{
+        type : String,
+        required : true,
+        max:50,
+    },
+
+})
+
+
+const BusinessStudentSchema = ({
+    name:{
+        type : String,
+        required : true,
+    },
+    email:{
         type : String,
         required : true,
         max:20,
-        unique :true
     },
     bloodGroup:{
+        type : String,
+        required : true,
+    },
+    businessName:{
         type : String,
         required : true,
     },
@@ -72,27 +119,87 @@ const StudentSchema = ({
         type : String,
         required : true,
     },
-    emergencyPhone:{
+    EnergencyNo:{
         type : String,
-        required : true,
     },
-    website:{
-        type : URL,
-        required : true,
-    },
+    image :{
+        filename: String ,
+        contentType:String,
+        data: mongoose.Schema.Types.Buffer
+      },
     password:{
         type : String,
         required : true,
         max:50,
-    }
+    },
+
+})
+const ProfessionalSchema = ({
+    name:{
+        type : String,
+        required : true,
+    },
+    email:{
+        type : String,
+        required : true,
+        max:20,
+    },
+    bloodGroup:{
+        type : String,
+        required : true,
+    },
+    companyName:{
+        type : String,
+        required : true,
+    },
+    designation:{
+        type : String,
+        required : true,
+    },
+    mobileNo:{
+        type : String,
+        required : true,
+    },
+    whatsappNo:{
+        type : String,
+        required : true,
+    },
+    address:{
+        type : String,
+        required : true,
+    },
+    linkedIn:{
+        type : String,
+        required : true,
+    },
+    image :{
+        filename: String ,
+        contentType:String,
+        data: mongoose.Schema.Types.Buffer
+      },
+    password:{
+        type : String,
+        required : true,
+        max:50,
+    },
+
 })
 
-const AdminListModel = AdminListDb.model('AdminData', AdminSchema);
-const StudentListModel = StudentListDb.model('Student', StudentSchema);
+
+const AdminListModel = AdminListDb.model('admindatas', AdminSchema);
+
+const StudentListModel = StudentListDb.model('studentdatas', StudentSchema);
+const BusinessStudentListModel = BusinessStudentListDb.model('businessstudentdatas', BusinessStudentSchema);
+
+const ProfessionalListModel = ProfessionalListDb.model('professionaldatas', ProfessionalSchema);
+const BizProfessionalListModel = ProfessionalListDb.model('bizprofessionaldatas', ProfessionalSchema);
 
 
 
 module.exports = {
     AdminListModel,
-    StudentListModel
+    StudentListModel,
+    BusinessStudentListModel,
+    ProfessionalListModel,
+    BizProfessionalListModel
 }

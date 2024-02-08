@@ -7,8 +7,8 @@ import CustomerServiceSection from "./pages/CustomerService";
 import Help from "./pages/Help";
 import Login from "./pages/Login";
 import StudentRegistration from "./pages/StudentRegistration";
-import BussinesStudentRegistration from "./pages/BussinesStudentRegistation";
-import ProfasonalOrBussinesRagistation from "./pages/ProfasonalOrBussinesRagistation";
+import BusinessStudentReg from "./pages/BusinessStudentReg";
+import ProfessionalReg from "./pages/ProfessionalReg";
 import ResearchRegistration from "./pages/ResearchRegistation"
 import Navbar from "./pages/Navbar";
 
@@ -24,8 +24,8 @@ function App() {
       <Route path="/Help" element={<Help/>}/>
       <Route path="/login" element={<Login/>}/>
       <Route path="/StudentRegistration" element={<StudentRegistration/>}/>
-      <Route path="/BussinesStudentRegistration" element={<BussinesStudentRegistration/>}/>
-      <Route path="/ProfasonalOrBussinesRagistation" element={<ProfasonalOrBussinesRagistation/>}/>
+      <Route path="/BusinessStudentReg" element={<BusinessStudentReg/>}/>
+      <Route path="/ProfessionalReg" element={<ProfessionalReg/>}/>
       <Route path="/ResearchRegistration" element={<ResearchRegistration/>}/>   
     </Routes>
     <ToastContainer />
