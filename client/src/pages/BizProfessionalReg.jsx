@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { registerRoute } from "../utils/ApiRoutes";
 
-const ProfessionalReg= () => {
+const BizProfessionalReg= () => {
   const [photo, setPhoto] = useState('');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -31,7 +31,7 @@ const ProfessionalReg= () => {
     try {
       event.preventDefault();
       if (handeValidation()) {
-        const userRole = "professional";
+        const userRole = "professionalbiz";
         console.log("in Validation", registerRoute)
         const response = await axios.post(
           registerRoute,
@@ -232,4 +232,4 @@ const ProfessionalReg= () => {
   );
 };
 
-export default ProfessionalReg;
+export default BizProfessionalReg;

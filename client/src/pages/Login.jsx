@@ -1,10 +1,57 @@
+import axios from 'axios';
 import React, { useState } from 'react';
+import { loginRoute } from '../utils/ApiRoutes';
+
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 const Login= () => {
+  const toastOptions = {
+    position: "bottom-right",
+    autoClose: 7000,
+    draggable: true,
+    pauseOnHover: true,
+  };
 
 const [email , setEmail ] = useState('')
 const [password , setPassword ] = useState('')
 const [role , setRole] = useState('')
+
+const handleSubmit = async (event) => {
+  try {
+    event.preventDefault();
+    if (handeValidation()) {
+      // console.log("in Validation", loginRoute);
+      const response = await axios.post(loginRoute, {
+        role, email, password 
+      });
+      //console.log(response.data.status, response.data.msg)
+      if (response.data.status === false) {
+        toast.error(response.data.msg, toastOptions);
+      }
+      if (response.data.status === true) {
+        toast.success(response.data.msg, toastOptions);
+        console.log(response.data.msg);
+      }
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+const handeValidation = () => {
+  if (password === "") {
+    toast.error("Password is Required", toastOptions);
+    return false;
+  
+  } else if (email === "") {
+    toast.error("email is required", toastOptions);
+    return false;
+  }
+
+  return true;
+};
+
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -14,16 +61,16 @@ const [role , setRole] = useState('')
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form className="space-y-6" >
+          <form className="space-y-6" onSubmit={handleSubmit} >
           <div>
               <label htmlFor="role" className="block text-sm font-medium text-gray-700">
                 Select Your Role 
               </label>
               <select name="role" id="role" className='w-full px-3 py-2 border' onChange={(e)=>setRole(e.target.value)}>
                 <option value="Student">Student</option>
-                <option value="Student">Student(Business)</option>
+                <option value="BizStudent">Student(Business)</option>
                 <option value="Professional">Professional</option>
-                <option value="Professional">Professional(Business)</option>
+                <option value="BizProfessional">Professional(Business)</option>
                 <option value="Researcher">Researcher</option>
                 <option value="Admin">Admin</option>
               </select>

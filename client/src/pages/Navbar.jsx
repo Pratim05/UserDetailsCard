@@ -100,14 +100,14 @@ const Navbar = () => {
                         As a Professional
                       </Link>
                       <Link
-                        to="/ProfessionalReg"
+                        to="/BizProfessionalReg"
                         className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
                         onClick={() => setIsOpen(false)}
                       >
                         As a Professional(Business)
                       </Link>
                       <Link
-                        to="/ResearchRegistration"
+                        to="/ResearcherReg"
                         className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
                         onClick={() => setIsOpen(false)}
                       >

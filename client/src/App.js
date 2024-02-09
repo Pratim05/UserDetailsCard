@@ -9,8 +9,9 @@ import Login from "./pages/Login";
 import StudentRegistration from "./pages/StudentRegistration";
 import BusinessStudentReg from "./pages/BusinessStudentReg";
 import ProfessionalReg from "./pages/ProfessionalReg";
-import ResearchRegistration from "./pages/ResearchRegistation"
+import ResearcherReg from "./pages/ResearcherReg"
 import Navbar from "./pages/Navbar";
+import BizProfessionalReg from "./pages/BizProfessionalReg";
 
 function App() {
   return (
@@ -26,7 +27,8 @@ function App() {
       <Route path="/StudentRegistration" element={<StudentRegistration/>}/>
       <Route path="/BusinessStudentReg" element={<BusinessStudentReg/>}/>
       <Route path="/ProfessionalReg" element={<ProfessionalReg/>}/>
-      <Route path="/ResearchRegistration" element={<ResearchRegistration/>}/>   
+      <Route path="/BizProfessionalReg" element={<BizProfessionalReg/>}/>
+      <Route path="/ResearcherReg" element={<ResearcherReg/>}/>   
     </Routes>
     <ToastContainer />
     </BrowserRouter>

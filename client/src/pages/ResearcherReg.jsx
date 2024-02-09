@@ -1,22 +1,19 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import axios from "axios"
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { registerRoute } from "../utils/ApiRoutes";
 
-const ProfessionalReg= () => {
+const ResearcherReg= () => {
   const [photo, setPhoto] = useState('');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [companyName, setCompanyName] = useState('');
   const [bloodGroup, setBloodGroup] = useState('');
   const [mobileNo, setMobileNo] = useState('');
-  const [designation, setDesignation] = useState('');
   const [whatsappNo, setWhatsAppNo] = useState('');
   const [linkedIn, setLinkedIn] = useState('');
   const [address, setAddress] = useState('');
-  // const [emergencyPhone, setEmergencyPhone] = useState('');
-  // const [website, setWebsite] = useState('');
+  const [designation, setDesignation] = useState('');
   const [password, setPassword] = useState("");
   const [confirmpassword, setConfirmPassword] = useState("");
 
@@ -31,7 +28,7 @@ const ProfessionalReg= () => {
     try {
       event.preventDefault();
       if (handeValidation()) {
-        const userRole = "professional";
+        const userRole = "researcher";
         console.log("in Validation", registerRoute)
         const response = await axios.post(
           registerRoute,
@@ -40,10 +37,9 @@ const ProfessionalReg= () => {
             name,
             email,
             bloodGroup,
-            mobileNo,
             designation,
+            mobileNo,
             linkedIn,
-            companyName,
             whatsappNo,
             address,
             password,
@@ -55,7 +51,7 @@ const ProfessionalReg= () => {
             },
           }
         );
-         console.log(response.data.Professional)
+         console.log(response.data.Researcher)
         if (response.data.status === false) {
           toast.error(response.data.msg, toastOptions);
         }
@@ -87,7 +83,7 @@ const ProfessionalReg= () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded-md shadow-lg max-w-md w-full">
-        <h2 className="text-2xl font-semibold mb-4">Professional Or Business Registation</h2>
+        <h2 className="text-2xl font-semibold mb-4"> Researcher Registration</h2>
         <form
           enctype="multipart/form-data"
           onSubmit={(event) => {
@@ -124,16 +120,6 @@ const ProfessionalReg= () => {
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="companyName" className="block text-gray-700 font-bold mb-2">Company Name</label>
-            <input 
-              type="text" 
-              id="companyName" 
-              className="border rounded-lg px-4 py-2 w-full focus:outline-none focus:border-blue-500" 
-              onChange={(e) => setCompanyName(e.target.value)} 
-              required 
-            />
-          </div>
-          <div className="mb-4">
             <label htmlFor="bloodGroup" className="block text-gray-700 font-bold mb-2">Blood Group</label>
             <input 
               type="text" 
@@ -166,7 +152,7 @@ const ProfessionalReg= () => {
           <div className="mb-4">
             <label htmlFor="whatsAppNo" className="block text-gray-700 font-bold mb-2">WhatsApp Number</label>
             <input 
-              type="tel" 
+              type="number" 
               id="whatsAppNo" 
               className="border rounded-lg px-4 py-2 w-full focus:outline-none focus:border-blue-500" 
               onChange={(e) => setWhatsAppNo(e.target.value)} 
@@ -192,6 +178,7 @@ const ProfessionalReg= () => {
               required 
             />
           </div>
+         
           <div className="mb-4">
             <label
               htmlFor="password"
@@ -232,4 +219,4 @@ const ProfessionalReg= () => {
   );
 };
 
-export default ProfessionalReg;
+export default ResearcherReg;
