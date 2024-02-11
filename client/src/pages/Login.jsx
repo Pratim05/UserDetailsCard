@@ -4,6 +4,7 @@ import { loginRoute } from '../utils/ApiRoutes';
 
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from 'react-router-dom';
 
 
 const Login= () => {
@@ -18,6 +19,7 @@ const [email , setEmail ] = useState('')
 const [password , setPassword ] = useState('')
 const [role , setRole] = useState('')
 
+const navigate = useNavigate()
 const handleSubmit = async (event) => {
   try {
     event.preventDefault();
@@ -26,13 +28,22 @@ const handleSubmit = async (event) => {
       const response = await axios.post(loginRoute, {
         role, email, password 
       });
-      //console.log(response.data.status, response.data.msg)
       if (response.data.status === false) {
         toast.error(response.data.msg, toastOptions);
       }
-      if (response.data.status === true) {
+      if (response.data.status === true && role!== 'Admin') {
         toast.success(response.data.msg, toastOptions);
-        console.log(response.data.msg);
+        console.log(response.data.user);
+        navigate('/idCardView',{ state :{
+          user :response.data.user, role : role 
+        }})
+      }
+      else if(response.data.status === true && role=== 'Admin'){
+        toast.success(response.data.msg, toastOptions);
+        console.log(response.data.user);
+        navigate('/dashboard',{ state :{
+          user :response.data.user, role : role 
+        }})
       }
     }
   } catch (error) {

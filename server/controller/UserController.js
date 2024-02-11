@@ -1,4 +1,4 @@
-const { StudentListModel, BusinessStudentListModel, ProfessionalListModel, BizProfessionalListModel, ResearcherListModel } = require("../Database");
+const { StudentListModel, BusinessStudentListModel, ProfessionalListModel, BizProfessionalListModel, ResearcherListModel, AdminListModel } = require("../Database");
 const bcrypt = require("bcrypt");
 
 // const jwt = require("jsonwebtoken")
@@ -244,7 +244,30 @@ module.exports.login = async(req, res, next)=>{
 
   try {
     const {role, email, password} = req.body
+    if(role === 'Admin'){
+     
+      const user = await AdminListModel.findOne({ email });
+      if (!user) {
+        return res.json({ msg: "Wrong Email", status: false });
+      }
+      const isPasswordValid = (password === user.password)
+      if (!isPasswordValid) {
+        return res.json({ msg: "Wrong Password", status: false });
+      }
+      // Create a user object without the password field
+      const userWithoutPassword = {
+        id : user._id,
+        name: user.name,
+        email : user.email,
+      };
+  
+      return res.json({
+        msg: "Admin Login Successfully",
+        status: true,
+        user: userWithoutPassword,
+      });
 
+    }
     if(role === 'Student'){
      
       const user = await StudentListModel.findOne({ email });
@@ -253,7 +276,7 @@ module.exports.login = async(req, res, next)=>{
       }
       const isPasswordValid =  bcrypt.compare(password, user.password);
       if (!isPasswordValid) {
-        return res.json({ msg: "Incorrect Password", status: false });
+        return res.json({ msg: "Wrong Password", status: false });
       }
       // Create a user object without the password field
       const userWithoutPassword = {
@@ -265,7 +288,7 @@ module.exports.login = async(req, res, next)=>{
         mobileNo:user.mobileNo,
         address:user.address,
         guardianPhone:user.guardianPhone,
-        image: user.image 
+        // image: user.image 
       };
   
       return res.json({
@@ -283,7 +306,7 @@ module.exports.login = async(req, res, next)=>{
       }
       const isPasswordValid =  bcrypt.compare(password, user.password);
       if (!isPasswordValid) {
-        return res.json({ msg: "Incorrect Password", status: false });
+        return res.json({ msg: "Wrong Password", status: false });
       }
       // Create a user object without the password field
       const userWithoutPassword = {
@@ -296,7 +319,7 @@ module.exports.login = async(req, res, next)=>{
         address:user.address,
         emergencyNo:user.emergencyNo,
         website:user.website,
-        image: user.image 
+        // image: user.image 
       };
   
       return res.json({
@@ -328,7 +351,7 @@ module.exports.login = async(req, res, next)=>{
         mobileNo:user.mobileNo,
         address:user.address,
         whatsappNo:user.whatsappNo,
-        image: user.image 
+        // image: user.image 
       };
   
       return res.json({
@@ -360,7 +383,7 @@ module.exports.login = async(req, res, next)=>{
         mobileNo:user.mobileNo,
         address:user.address,
         whatsappNo:user.whatsappNo,
-        image: user.image 
+        // image: user.image 
       };
   
       return res.json({
@@ -410,3 +433,4 @@ module.exports.login = async(req, res, next)=>{
   }
 
 }
+

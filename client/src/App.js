@@ -12,6 +12,8 @@ import ProfessionalReg from "./pages/ProfessionalReg";
 import ResearcherReg from "./pages/ResearcherReg"
 import Navbar from "./pages/Navbar";
 import BizProfessionalReg from "./pages/BizProfessionalReg";
+import IdCardView from "./pages/IdCardView";
+import Dashboard from "./pages/Dashboard";
 
 function App() {
   return (
@@ -24,11 +26,15 @@ function App() {
       <Route path = "/customerservice" element = {<CustomerServiceSection/>}/>
       <Route path="/Help" element={<Help/>}/>
       <Route path="/login" element={<Login/>}/>
+      <Route path="/dashboard" element={<Dashboard/>}/>
+
       <Route path="/StudentRegistration" element={<StudentRegistration/>}/>
+
       <Route path="/BusinessStudentReg" element={<BusinessStudentReg/>}/>
       <Route path="/ProfessionalReg" element={<ProfessionalReg/>}/>
       <Route path="/BizProfessionalReg" element={<BizProfessionalReg/>}/>
       <Route path="/ResearcherReg" element={<ResearcherReg/>}/>   
+      <Route path="/idCardView" element={<IdCardView/>}/>   
     </Routes>
     <ToastContainer />
     </BrowserRouter>

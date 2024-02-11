@@ -83,8 +83,8 @@ const ResearcherReg= () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded-md shadow-lg max-w-md w-full">
-        <h2 className="text-2xl font-semibold mb-4"> Researcher Registration</h2>
-        <form
+        <h2 className="text-2xl font-semibold mb-6"> Researcher Registration</h2>
+        <form className='overflow-y-auto h-96'
           enctype="multipart/form-data"
           onSubmit={(event) => {
             handleSubmit(event);
@@ -100,10 +100,10 @@ const ResearcherReg= () => {
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="userName" className="block text-gray-700 font-bold mb-2">Name</label>
+            <label htmlFor="name" className="block text-gray-700 font-bold mb-2">Name</label>
             <input 
               type="text" 
-              id="userName" 
+              id="name" 
               className="border rounded-lg px-4 py-2 w-full focus:outline-none focus:border-blue-500" 
               onChange={(e) => setName(e.target.value)} 
               required 

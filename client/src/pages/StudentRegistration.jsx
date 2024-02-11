@@ -82,7 +82,7 @@ const StudentRegistration = () => {
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded-md shadow-lg max-w-md w-full">
         <h2 className="text-2xl font-semibold mb-4"> Student Registration</h2>
-        <form
+        <form className='overflow-y-auto h-96'
           enctype="multipart/form-data"
           onSubmit={(event) => {
             handleSubmit(event);

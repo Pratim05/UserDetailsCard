@@ -77,7 +77,7 @@ const Navbar = () => {
                    Registration
                   </button>
                   {isOpen && (
-                    <div className="absolute z-10 right-0 mt-2 w-48 bg-white rounded-md shadow-lg">
+                    <div className=" absolute z-10 right-0 mt-2 w-64 bg-white rounded-md shadow-lg">
                       <Link
                         to="/StudentRegistration"
                         className="block px-4 py-2 text-gray-800 hover:bg-gray-200"

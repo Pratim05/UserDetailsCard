@@ -84,7 +84,7 @@ const BusinessStudentReg = () => {
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded-md shadow-lg max-w-md w-full">
         <h2 className="text-2xl font-semibold mb-4"> Student Register</h2>
-        <form onSubmit={handleSubmit}>
+        <form className='overflow-y-auto h-96' onSubmit={handleSubmit}>
           <div className="mb-4">
             <label htmlFor="photo" className="block text-gray-700 font-bold mb-2">Photo</label>
             <input 
