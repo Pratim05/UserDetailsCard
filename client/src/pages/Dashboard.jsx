@@ -12,7 +12,7 @@ const location = useLocation()
 const {user , role} = location.state
 
   return (
-    <div className='flex flex-row gap-x-2.5 carosol_img'>       
+    <div className='flex flex-row gap-x-2.5'>       
         <DashboardMenu user = {user} setDataof = {setDataof} setUserListData={setUserListData}/>
         <TableView dataOf = {dataOf} userListData = {userListData}/>
     </div>

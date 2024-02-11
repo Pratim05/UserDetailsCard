@@ -28,3 +28,13 @@ textarea{
     resize: none;
 }
 
+.table-wrp{
+  max-height: 75vh;
+  overflow-y: auto;
+  overflow-x: auto;
+  display: block;
+}
+thead{
+  position: sticky;
+  top: 0;
+}

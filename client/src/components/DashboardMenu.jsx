@@ -24,18 +24,20 @@ try {
   }
 
   return (
-    <div className='h-screen w-60 border-2 bg-slate-500'>
+    <div className='h-screen w-36 border-2 bg-slate-500'>
         <div className='flex flex-col items-center  gap-3 mb-10'>
             <img className='w-16' src={admin_profile} alt="admin_profile" />
             <div className='text-2xl  font-mono font-bold text-slate-700'>ADMIN</div>
+            <div className='text-xs font-mono  text-white'>{user.email}</div>
+
         </div>
         <div>
-            <ul className='flex flex-col gap-5 text-2xl  font-mono font-bold text-slate-300'>
+            <ul className='flex flex-col gap-5 text-lg font-mono font-bold text-slate-300 pl-2'>
                 <li tabIndex ={0} className='focus:text-blue-700 focus:border' onClick={()=>handleUserListRole('Student')}>Student</li>
-                <li tabIndex ={0} className='focus:text-blue-700 focus:border'>Business Sudent</li>
-                <li tabIndex ={0} className='focus:text-blue-700 focus:border'>Professional</li>
-                <li tabIndex ={0} className='focus:text-blue-700 focus:border'> Business Professional</li>
-                <li tabIndex ={0} className='focus:text-blue-700 focus:border'>Researcher</li>
+                <li tabIndex ={0} className='focus:text-blue-700 focus:border' onClick={()=>handleUserListRole('BizStudent')}>Business Sudent</li>
+                <li tabIndex ={0} className='focus:text-blue-700 focus:border' onClick={()=>handleUserListRole('Professional')}>Professional</li>
+                <li tabIndex ={0} className='focus:text-blue-700 focus:border' onClick={()=>handleUserListRole('BizProfessional')}> Business Professional</li>
+                <li tabIndex ={0} className='focus:text-blue-700 focus:border' onClick={()=>handleUserListRole('Researcher')}>Researcher</li>
             </ul>
         </div>
     </div>
