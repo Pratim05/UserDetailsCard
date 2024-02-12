@@ -14,6 +14,7 @@ import Navbar from "./pages/Navbar";
 import BizProfessionalReg from "./pages/BizProfessionalReg";
 import IdCardView from "./pages/IdCardView";
 import Dashboard from "./pages/Dashboard";
+import ResetPass from "./components/ResetPass";
 
 function App() {
   return (
@@ -26,6 +27,8 @@ function App() {
       <Route path = "/customerservice" element = {<CustomerServiceSection/>}/>
       <Route path="/Help" element={<Help/>}/>
       <Route path="/login" element={<Login/>}/>
+      <Route path="/resetpass/:role/:id/:token" element = {<ResetPass/>}/>
+
       <Route path="/dashboard" element={<Dashboard/>}/>
 
       <Route path="/StudentRegistration" element={<StudentRegistration/>}/>

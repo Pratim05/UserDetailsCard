@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useState } from 'react';
-import { loginRoute } from '../utils/ApiRoutes';
+import { forgetpassroute, loginRoute } from '../utils/ApiRoutes';
 
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -20,6 +20,31 @@ const [password , setPassword ] = useState('')
 const [role , setRole] = useState('')
 
 const navigate = useNavigate()
+
+const handleResetPass = async()=>{
+  try {
+    console.log(email, role)
+    if(email==="" || role === ""){
+      toast.error("Enter The email and Select Your Role", toastOptions);
+      return false
+    }
+    const response = await axios.post(forgetpassroute, {
+      email , role
+    });
+    // console.log(response.data)
+    if (response.data.status === false) {
+      toast.error(response.data.msg, toastOptions);
+    }
+    if (response.data.status === true) {
+      toast.success(response.data.msg, toastOptions);
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+
+
 const handleSubmit = async (event) => {
   try {
     event.preventDefault();
@@ -78,6 +103,7 @@ const handeValidation = () => {
                 Select Your Role 
               </label>
               <select name="role" id="role" className='w-full px-3 py-2 border' onChange={(e)=>setRole(e.target.value)}>
+                <option value="" className='text-grey-500'>Please Choose A Role</option>
                 <option value="Student">Student</option>
                 <option value="BizStudent">Student(Business)</option>
                 <option value="Professional">Professional</option>
@@ -119,10 +145,10 @@ const handeValidation = () => {
               </div>
             </div>
             
-            <div className="text-sm">
-                <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
+            <div className="font-medium text-indigo-600 hover:text-indigo-500" onClick={()=>handleResetPass()}>
+                
                   Forgot your password?
-                </a>
+                
               </div>
             <div>
               <button

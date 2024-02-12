@@ -23,7 +23,7 @@ module.exports.register = async (req, res, next) => {
         const {
             name, email, bloodGroup, school, mobileNo,address, guardianPhone, password,
           } = req.body;
-        const userCheck =  await StudentListModel.find({email})
+        const userCheck = await StudentListModel.findOne({email})
        if(userCheck) {
         return res.json({
           msg: "User Already Exist",
@@ -336,7 +336,7 @@ module.exports.login = async(req, res, next)=>{
         mobileNo:user.mobileNo,
         address:user.address,
         guardianPhone:user.guardianPhone,
-        // image: user.image 
+        image: user.image 
       };
   
       return res.json({
@@ -367,7 +367,7 @@ module.exports.login = async(req, res, next)=>{
         address:user.address,
         emergencyNo:user.emergencyNo,
         website:user.website,
-        // image: user.image 
+        //image: user.image 
       };
   
       return res.json({
@@ -482,107 +482,125 @@ module.exports.login = async(req, res, next)=>{
 
 }
 
-// module.exports.forgetpass = async (req, res, next) => {
-//   try {
-//     const { email , role } = req.body;
-//     let user
-//     if (role === 'Student'){
-//        user = await StudentListModel.findOne({ email });
-//     }else if(role === "BizStudent"){
-//       user = await BusinessStudentListModel.findOne({ email });
-//     }else if(role === "Professional"){
-//       user = await ProfessionalListModel.findOne({ email });
-//     }else if(role === "BizProfessional"){
-//       user = await BizProfessionalListModel.findOne({ email });
-//     }else if(role === "Researcher"){
-//       user = await ResearcherListModel.findOne({ email });
-//     }
+module.exports.forgetpass = async (req, res, next) => {
+  try {
+    const { email , role } = req.body;
+    console.log(email,role)
+    let user
+    if (role === 'Student'){
+       user = await StudentListModel.findOne({ email });
+    }else if(role === "BizStudent"){
+      user = await BusinessStudentListModel.findOne({ email });
+    }else if(role === "Professional"){
+      user = await ProfessionalListModel.findOne({ email });
+    }else if(role === "BizProfessional"){
+      user = await BizProfessionalListModel.findOne({ email });
+    }else if(role === "Researcher"){
+      user = await ResearcherListModel.findOne({ email });
+    }
 
-//     if (!user) {
-//       return res.json({ msg: "No Registered Account found", status: false });
-//     }
-//     const secret = process.env.JWT_SECRET_KEY + user.password
-//     const token = jwt.sign({email:user.email , id : user._id}, secret , {expiresIn :"10m"})
+    if (!user) {
+      return res.json({ msg: "No Registered Account found", status: false });
+    }
+    const secret = process.env.JWT_SECRET_KEY + user.password
+    const token = jwt.sign({email:user.email , id : user._id}, secret , {expiresIn :"10m"})
     
-//     const resetLink = `http://localhost:3000/resetpass/${role}/${user._id}/${token}`
-//    // console.log(resetLink)
-//     //Sending an email
-//     var mailOptions = {
-//       from: "IDShieldPro",
-//       to: user.email,
-//       subject: "Forget Password",
-//       html: `
-//           <h3> Welcome ${user.name},</h3>
-//           <p>We wanted to express our sincere gratitude for choosing IDShieldPro .</p>
-//           <h4>Click the Button to Reset Password , Link will Expires in 6 minutes</h4>
-//           <button><a href =${resetLink}>Reset Password</a></button>
+    const resetLink = `http://localhost:3000/resetpass/${role}/${user._id}/${token}`
+   // console.log(resetLink)
+    //Sending an email
+    var mailOptions = {
+      from: "IDShieldPro",
+      to: user.email,
+      subject: "Forget Password",
+      html: `
+          <h3> Welcome ${user.name},</h3>
+          <p>We wanted to express our sincere gratitude for choosing IDShieldPro .</p>
+          <h4>Click the Button to Reset Password , Link will Expires in 6 minutes</h4>
+          <button><a href =${resetLink}>Reset Password</a></button>
+          <p>If you not made this request , Please Ignore<p/
+          <p>Best regards,<br>
+          <b>IDShieldPro Team</b></p>
+        `,
+    };
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        console.log(error);
+      } else {
+        //console.log("Email sent : " + info.response);
+      }
+    });
 
-//           <p>If you not made this request , Please Ignore<p/
+    return res.json({ msg: "Check Your Email to Reset Password", status: true });
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
+
+module.exports.resetpass = async (req, res, next) => {
+  try {
+    const { id, token, role } = req.params;
+    const { newPassword } = req.body;
+
+    let user
+    if (role === 'Student'){
+      user = await StudentListModel.findOne({ _id: id });
+   }else if(role === "BizStudent"){
+     user = await BusinessStudentListModel.findOne({ _id: id });
+   }else if(role === "Professional"){
+     user = await ProfessionalListModel.findOne({ _id: id });
+   }else if(role === "BizProfessional"){
+     user = await BizProfessionalListModel.findOne({ _id: id });
+   }else if(role === "Researcher"){
+     user = await ResearcherListModel.findOne({ _id: id });
+   }
+
+    if (!user) {
+      return res.json({ msg: "No Registered Account found", status: false });
+    }
+
+    try {
+      const secret = process.env.JWT_SECRET_KEY + user.password;
+
+      jwt.verify(token, secret, async (err, decoded) => {
+        if (err) {
+          return res.json({ msg: "Invalid Link or Expired", status: false });
+        }
+
+        // const passwordToHash = newPassword.newPassword; // Extract the actual password
+
+        // Hash the new password
+        try {
+          const hash = await bcrypt.hash(newPassword, 10);
+
+          // Update user's password in the database
+          
          
-//           <p>Best regards,<br>
-//           <b>The Swift Talk Team</b></p>
-//         `,
-//     };
-//     transporter.sendMail(mailOptions, function (error, info) {
-//       if (error) {
-//         console.log(error);
-//       } else {
-//         //console.log("Email sent : " + info.response);
-//       }
-//     });
-
-//     return res.json({ msg: "Check Your Email to Reset Password", status: true });
-//   } catch (err) {
-//     console.log(err);
-//     next(err);
-//   }
-// };
-
-// module.exports.resetpass = async (req, res, next) => {
-//   try {
-//     const { id, token } = req.params;
-//     const { newPassword } = req.body;
-
-//     // console.log(req.params);
-//     // console.log(newPassword);
-
-//     const user = await UsersListModel.findOne({ _id: id });
-
-//     if (!user) {
-//       return res.json({ msg: "No Registered Account found", status: false });
-//     }
-
-//     try {
-//       const secret = process.env.JWT_SECRET_KEY + user.password;
-
-//       jwt.verify(token, secret, async (err, decoded) => {
-//         if (err) {
-//           return res.json({ msg: "Invalid Link or Expired", status: false });
-//         }
-
-//         // const passwordToHash = newPassword.newPassword; // Extract the actual password
-
-//         // Hash the new password
-//         try {
-//           const hash = await bcrypt.hash(newPassword, 10);
-
-//           // Update user's password in the database
-//           await UsersListModel.findByIdAndUpdate({ _id: id }, { password: hash });
-
-//           // Send success response
-//           res.json({ msg: "New Password is Set", status: true });
-//         } catch (hashError) {
-//           // Handle error while hashing
-//           console.error(hashError);
-//           res.json({ msg: "Error hashing the password", status: false });
-//         }
-//       });
-//     } catch (error) {
-//       console.error(error);
-//       res.json({ msg: "Reset Link not Verified", status: false });
-//     }
-//   } catch (err) {
-//     console.error(err);
-//     next(err);
-//   }
-// };
+          if (role === 'Student'){
+             await StudentListModel.findByIdAndUpdate({ _id: id }, { password: hash });
+          }else if(role === "BizStudent"){
+            await BusinessStudentListModel.findByIdAndUpdate({ _id: id }, { password: hash });
+          }else if(role === "Professional"){
+            await ProfessionalListModel.findByIdAndUpdate({ _id: id }, { password: hash });
+          }else if(role === "BizProfessional"){
+            await BizProfessionalListModel.findByIdAndUpdate({ _id: id }, { password: hash });
+          }else if(role === "Researcher"){
+            await ResearcherListModel.findByIdAndUpdate({ _id: id }, { password: hash });
+          }
+          // Send success response
+          res.json({ msg: "New Password is Set", status: true });
+        } catch (hashError) {
+          // Handle error while hashing
+          console.error(hashError);
+          res.json({ msg: "Error hashing the password", status: false });
+        }
+      });
+    } catch (error) {
+      console.error(error);
+      res.json({ msg: "Reset Link not Verified", status: false });
+    }
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+};
